@@ -1,7 +1,6 @@
 package gb.spring.servlet;
 
 import gb.spring.service.ProductService;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
