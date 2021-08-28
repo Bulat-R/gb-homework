@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gb.spring.homework.deserializer.ProductJsonDeserializer;
 import gb.spring.homework.validator.CompanyInList;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -17,6 +20,8 @@ import java.math.BigDecimal;
 @Table(name = "product",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name", "company_id"}))
 @JsonDeserialize(using = ProductJsonDeserializer.class)
+@OptimisticLocking(type = OptimisticLockType.ALL)
+@DynamicUpdate
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

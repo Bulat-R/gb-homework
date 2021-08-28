@@ -67,7 +67,14 @@ public class ProductDao {
         Session session = factory.openSession();
         try {
             session.beginTransaction();
-            session.saveOrUpdate(product);
+            if (product.getId() != null) {
+                Product old = session.find(Product.class, product.getId());
+                old.setName(product.getName());
+                old.setCost(product.getCost());
+                old.setCompany(product.getCompany());
+            } else {
+                session.persist(product);
+            }
             session.getTransaction().commit();
         } catch (HibernateException e) {
             if (session.getTransaction() != null) {
