@@ -17,7 +17,7 @@ public class ProductService {
     private final ProductDao dao;
     private final CompanyDao companyDao;
 
-    public List<Product> findAll(String... sortBy) {
+    public List<Product> findAll(List<String> sortBy) {
         return dao.findAll(sortBy);
     }
 
@@ -43,7 +43,7 @@ public class ProductService {
         }
     }
 
-    public List<Product> findByFilter(ProductFilter filter, String... sortBy) {
+    public List<Product> findByFilter(ProductFilter filter, List<String> sortBy) {
         return dao.findByCriteria(filter, sortBy);
     }
 }

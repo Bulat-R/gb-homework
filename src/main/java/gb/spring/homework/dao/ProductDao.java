@@ -21,10 +21,10 @@ public class ProductDao {
 
     private final SessionFactory factory;
 
-    public List<Product> findAll(String... sortBy) {
+    public List<Product> findAll(List<String> sortBy) {
         List<Product> result = null;
         String orderBy = "";
-        if (sortBy != null && sortBy.length > 0) {
+        if (sortBy != null && sortBy.size() > 0) {
             StringJoiner sj = new StringJoiner(", ");
             for (String str : sortBy) {
                 sj.add(str);
@@ -104,7 +104,7 @@ public class ProductDao {
         return result;
     }
 
-    public List<Product> findByCriteria(ProductFilter filter, String... sortBy) {
+    public List<Product> findByCriteria(ProductFilter filter, List<String> sortBy) {
         CriteriaBuilder builder = factory.getCriteriaBuilder();
         CriteriaQuery<Product> query = builder.createQuery(Product.class);
         Root<Product> root = query.from(Product.class);
@@ -127,11 +127,11 @@ public class ProductDao {
         return result;
     }
 
-    private List<Order> getOrderList(CriteriaBuilder builder, Root<Product> root, String... sortBy) {
-        if (sortBy == null || sortBy.length == 0) {
+    private List<Order> getOrderList(CriteriaBuilder builder, Root<Product> root, List<String> sortBy) {
+        if (sortBy == null || sortBy.size() == 0) {
             return Collections.emptyList();
         }
-        return Arrays.stream(sortBy).map(s -> builder.asc(root.get(s))).collect(Collectors.toList());
+        return sortBy.stream().map(s -> builder.asc(root.get(s))).collect(Collectors.toList());
     }
 
     private Predicate getFullPredicate(CriteriaBuilder builder, Root<Product> root, ProductFilter filter) {

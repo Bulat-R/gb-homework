@@ -3,7 +3,7 @@ package gb.spring.homework.controller;
 import gb.spring.homework.model.Product;
 import gb.spring.homework.model.ProductFilter;
 import gb.spring.homework.service.ProductService;
-import gb.spring.homework.validator.ClassParameter;
+import gb.spring.homework.validator.ClassFieldName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public List<Product> getAll(@RequestParam(required = false) @ClassParameter(targetClass = Product.class) String... sortBy) {
+    public List<Product> getAll(@RequestParam(required = false) List<@ClassFieldName(targetClass = Product.class) String> sortBy) {
         return service.findAll(sortBy);
     }
 
@@ -32,7 +32,7 @@ public class ProductController {
 
     @PostMapping("/filter")
     public List<Product> getByFilter(@RequestBody @Valid ProductFilter filter,
-                                     @RequestParam(required = false) @ClassParameter(targetClass = Product.class) String... sortBy) {
+                                     @RequestParam(required = false) List<@ClassFieldName(targetClass = Product.class) String> sortBy) {
         return service.findByFilter(filter, sortBy);
     }
 

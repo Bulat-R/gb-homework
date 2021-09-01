@@ -23,22 +23,25 @@ public class ProductJsonDeserializer extends JsonDeserializer<Product> {
         Company company = new Company();
         TreeNode treeNode = p.getCodec().readTree(p);
         ObjectNode companyNode = (ObjectNode) treeNode.get("company");
-        String productName = ((TextNode) treeNode.get("name")).asText();
+        TextNode productNameNode = (TextNode) treeNode.get("name");
+        String productName = productNameNode == null ? "" : productNameNode.asText();
         if (companyNode == null && productName.contains(" - ")) {
-            String[] arr = productName.split(" - ");
-            company.setName(arr[1].trim());
-            product.setName(arr[0].trim());
+            company.setName(productName.substring(0, productName.lastIndexOf(" - ")));
+            product.setName(productName.substring(productName.lastIndexOf(" - ") + 3));
         } else {
             product.setName(productName);
             if (companyNode != null) {
-                company.setName(companyNode.get("name").asText());
+                company.setName(companyNode.get("name") == null ? "" : companyNode.get("name").asText());
             }
         }
         NumericNode idNode = (NumericNode) treeNode.get("id");
         if (idNode != null) {
             product.setId(idNode.asLong());
         }
-        product.setCost(BigDecimal.valueOf(((NumericNode) treeNode.get("cost")).asDouble()));
+        NumericNode costNode = (NumericNode) treeNode.get("cost");
+        if (costNode != null) {
+            product.setCost(BigDecimal.valueOf((costNode).asDouble()));
+        }
         product.setCompany(company);
         return product;
     }
