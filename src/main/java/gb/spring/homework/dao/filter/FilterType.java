@@ -1,4 +1,4 @@
-package gb.spring.homework.model;
+package gb.spring.homework.dao.filter;
 
 public enum FilterType {
     AND, OR

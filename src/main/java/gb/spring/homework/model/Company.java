@@ -1,20 +1,23 @@
 package gb.spring.homework.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 @Entity
 @Table(name = "company",
         uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotBlank
-    @Size(min = 3, max = 64)
-    private String name;
+public class Company extends AbstractEntity {
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    @JsonIgnore
+    private List<Product> products;
 }

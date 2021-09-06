@@ -1,7 +1,8 @@
 package gb.spring.homework.controller;
 
+import gb.spring.homework.dao.filter.ProductFilter;
+import gb.spring.homework.model.Order;
 import gb.spring.homework.model.Product;
-import gb.spring.homework.model.ProductFilter;
 import gb.spring.homework.service.ProductService;
 import gb.spring.homework.validator.ClassFieldName;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,8 @@ public class ProductController {
         service.deleteById(id);
     }
 
-
+    @GetMapping("/{productId}/orders")
+    public List<Order> getOrders(@PathVariable Long productId) {
+        return service.findOrders(productId);
+    }
 }

@@ -1,6 +1,7 @@
 package gb.spring.homework.controller;
 
 import gb.spring.homework.model.Company;
+import gb.spring.homework.model.Product;
 import gb.spring.homework.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +35,12 @@ public class CompanyController {
     }
 
     @DeleteMapping("/delete")
-    public void removeCompany(@RequestParam @Min(1L) Long id) {
+    public void deleteById(@RequestParam @Min(1L) Long id) {
         service.deleteById(id);
+    }
+
+    @GetMapping("/{companyId}/products")
+    public List<Product> getProducts(@PathVariable Long companyId) {
+        return service.findProducts(companyId);
     }
 }

@@ -1,7 +1,9 @@
 package gb.spring.homework;
 
 import gb.spring.homework.model.Company;
+import gb.spring.homework.model.Order;
 import gb.spring.homework.model.Product;
+import gb.spring.homework.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -20,6 +22,8 @@ public class HomeworkApplication {
                 .applySettings(configuration.getProperties()).build();
         configuration.addAnnotatedClass(Company.class);
         configuration.addAnnotatedClass(Product.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Order.class);
         return configuration.buildSessionFactory(registry);
     }
 

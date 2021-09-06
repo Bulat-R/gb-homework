@@ -1,8 +1,8 @@
 package gb.spring.homework.service;
 
 import gb.spring.homework.dao.CompanyDao;
-import gb.spring.homework.exception.IdNotFoundException;
 import gb.spring.homework.model.Company;
+import gb.spring.homework.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class CompanyService {
     private final CompanyDao dao;
 
     public Company getByName(String name) {
-        return dao.findByName(name);
+        return dao.findByName(name).get(0);
     }
 
     public List<Company> findAll() {
@@ -23,23 +23,18 @@ public class CompanyService {
     }
 
     public void save(Company company) {
-        if (getByName(company.getName()) == null) {
-            company.setId(null);
-            dao.save(company);
-        }
+        dao.save(company);
     }
 
     public void deleteById(Long id) {
-        if (dao.deleteById(id) == 0) {
-            throw new IdNotFoundException();
-        }
+        dao.deleteById(id);
     }
 
     public Company getById(Long id) {
-        Company company = dao.findById(id);
-        if (company == null) {
-            throw new IdNotFoundException();
-        }
-        return company;
+        return dao.findById(id);
+    }
+
+    public List<Product> findProducts(Long companyId) {
+        return dao.findProducts(companyId);
     }
 }

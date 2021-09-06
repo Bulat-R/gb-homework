@@ -1,5 +1,6 @@
-package gb.spring.homework.model;
+package gb.spring.homework.dao.filter;
 
+import gb.spring.homework.model.Product;
 import gb.spring.homework.validator.ClassFieldName;
 import lombok.Data;
 
