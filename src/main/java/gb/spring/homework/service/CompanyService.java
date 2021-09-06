@@ -23,6 +23,9 @@ public class CompanyService {
     }
 
     public void save(Company company) {
+        if(company.getId() == null && dao.findByName(company.getName()) != null) {
+            return;
+        }
         dao.save(company);
     }
 

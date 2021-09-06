@@ -59,7 +59,7 @@ public abstract class AbstractDao<T extends AbstractEntity> {
     }
 
     public List<T> findByName(String name) {
-        String queryString = "SELECT t FROM " + type.getSimpleName() + " t WHERE t.name:=name";
+        String queryString = "SELECT t FROM " + type.getSimpleName() + " t WHERE t.name=:name";
         log.debug("Query: {}", queryString);
         return wrapper.wrap(session -> session.createQuery(queryString)
                 .setParameter("name", name)

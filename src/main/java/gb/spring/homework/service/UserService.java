@@ -24,6 +24,9 @@ public class UserService {
     }
 
     public void save(User user) {
+        if (user.getId() == null && dao.findByName(user.getName()) != null) {
+            return;
+        }
         dao.save(user);
     }
 
