@@ -1,43 +1,25 @@
 package gb.spring.homework.service;
 
-import gb.spring.homework.dao.ProductDao;
-import gb.spring.homework.dao.filter.ProductFilter;
-import gb.spring.homework.model.Order;
+import gb.spring.homework.dto.OrderDto;
 import gb.spring.homework.model.Product;
-import lombok.RequiredArgsConstructor;
+import gb.spring.homework.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class ProductService {
+@Transactional
+public class ProductService extends AbstractService<Product> {
 
-    private final ProductDao dao;
-    private final CompanyService companyService;
+    private final OrderService orderService;
 
-    public List<Product> findAll(List<String> sortBy) {
-        return dao.findAll(sortBy);
+    public ProductService(ProductRepository repository, OrderService orderService) {
+        super(repository);
+        this.orderService = orderService;
     }
 
-    public void save(Product product) {
-        product.setCompany(companyService.getByName(product.getCompany().getName()));
-        dao.save(product);
-    }
-
-    public Product getById(Long id) {
-        return dao.findById(id);
-    }
-
-    public void deleteById(Long id) {
-        dao.deleteById(id);
-    }
-
-    public List<Product> findByFilter(ProductFilter filter, List<String> sortBy) {
-        return dao.findByCriteria(filter, sortBy);
-    }
-
-    public List<Order> findOrders(Long productId) {
-        return dao.findOrders(productId);
+    public List<OrderDto> findOrders(Long productId) {
+        return orderService.findByProduct(productId);
     }
 }

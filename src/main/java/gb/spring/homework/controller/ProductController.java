@@ -1,16 +1,13 @@
 package gb.spring.homework.controller;
 
-import gb.spring.homework.dao.filter.ProductFilter;
-import gb.spring.homework.model.Order;
+import gb.spring.homework.dto.OrderDto;
 import gb.spring.homework.model.Product;
 import gb.spring.homework.service.ProductService;
-import gb.spring.homework.validator.ClassFieldName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -22,7 +19,7 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public List<Product> getAll(@RequestParam(required = false) List<@ClassFieldName(targetClass = Product.class) String> sortBy) {
+    public List<Product> getAll(@RequestParam(required = false) List<String> sortBy) {
         return service.findAll(sortBy);
     }
 
@@ -31,24 +28,18 @@ public class ProductController {
         service.save(product);
     }
 
-    @PostMapping("/filter")
-    public List<Product> getByFilter(@RequestBody @Valid ProductFilter filter,
-                                     @RequestParam(required = false) List<@ClassFieldName(targetClass = Product.class) String> sortBy) {
-        return service.findByFilter(filter, sortBy);
-    }
-
     @GetMapping("/{id}")
-    public Product getById(@PathVariable @Min(1L) Long id) {
-        return service.getById(id);
+    public Product getById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
-    @DeleteMapping("/delete")
-    public void removeCompany(@RequestParam @Min(1L) Long id) {
+    @DeleteMapping
+    public void deleteById(@RequestBody Long id) {
         service.deleteById(id);
     }
 
-    @GetMapping("/{productId}/orders")
-    public List<Order> getOrders(@PathVariable Long productId) {
+    @GetMapping("/{productId}/order")
+    public List<OrderDto> getOrders(@PathVariable Long productId) {
         return service.findOrders(productId);
     }
 }

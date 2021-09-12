@@ -20,4 +20,9 @@ public class Company extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
     @JsonIgnore
     private List<Product> products;
+
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    @JsonIgnore
+    private List<Order> orders;
 }

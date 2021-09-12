@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS company CASCADE;
 DROP TABLE IF EXISTS product CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
-DROP FUNCTION IF EXISTS set_price();
+DROP FUNCTION IF EXISTS set_price_company();
 
 CREATE TABLE users
 (
@@ -32,26 +32,30 @@ CREATE TABLE orders
     date          TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
     user_id       BIGINT                      NOT NULL REFERENCES users,
     product_id    BIGINT                      NOT NULL REFERENCES product,
+    company_id    BIGINT REFERENCES company,
     count         INTEGER                     NOT NULL CHECK ( count > 0 ),
     selling_price NUMERIC(19, 2)
 );
 
-CREATE FUNCTION set_price()
+CREATE FUNCTION set_price_company()
     RETURNS trigger
     LANGUAGE 'plpgsql'
 AS
 $BODY$
 BEGIN
-    UPDATE orders SET selling_price = (SELECT cost FROM product WHERE id = NEW.product_id) WHERE id = NEW.id;
+    UPDATE orders
+    SET selling_price = (SELECT cost FROM product WHERE id = NEW.product_id),
+        company_id    = (SELECT company_id FROM product WHERE id = NEW.product_id)
+    WHERE id = NEW.id;
     RETURN NEW;
 END;
 $BODY$;
 
-CREATE TRIGGER set_price
+CREATE TRIGGER set_price_company
     AFTER INSERT
     ON orders
     FOR EACH ROW
-EXECUTE PROCEDURE set_price();
+EXECUTE PROCEDURE set_price_company();
 
 INSERT INTO company (name)
 VALUES ('companyA'),

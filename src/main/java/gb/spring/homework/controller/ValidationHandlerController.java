@@ -3,7 +3,6 @@ package gb.spring.homework.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,7 +13,6 @@ import java.util.StringJoiner;
 public class ValidationHandlerController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handler(MethodArgumentNotValidException e) {
         StringJoiner sj = new StringJoiner("\n");
@@ -23,7 +21,6 @@ public class ValidationHandlerController {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handler(ConstraintViolationException e) {
         StringJoiner sj = new StringJoiner("\n");
