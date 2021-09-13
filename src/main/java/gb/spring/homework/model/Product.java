@@ -29,8 +29,7 @@ public class Product extends AbstractEntity {
     @Min(value = 0)
     private BigDecimal cost;
 
-    @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<Order> orders;
 
